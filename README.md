@@ -1,2 +1,2 @@
 # EKS_ECR_Terraform
-I have developed the Infrastructure as Code for creating the EKS cluster and Elastic Container Registry by Terraform and storing the State file in S3 bucket
+Implemented Terraform IaC with modular architecture, S3 remote backend, and IAM-based access control to provision EKS and ECR, enabling secure, scalable, and environment-agnostic infrastructure deployments.
