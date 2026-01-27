@@ -1,5 +1,6 @@
 
 - **Big picture:** This is a Terraform-based IaC repo that provisions VPC, EKS, and ECR using a modular layout under `modules/`. Top-level composition is in `main.tf` which instantiates `modules/vpc`, `modules/eks`, and `modules/ecr`.
+- **Enhancements included:** consistent naming via a project/environment prefix, standardized tagging, subnet tags for Kubernetes load balancers, configurable EKS node group sizing, managed add-ons, ECR encryption, and lifecycle policies for image retention.
 
 - **Key files:**
   - **Top-level composition:** [main.tf](main.tf) — shows how modules are wired together.
@@ -47,3 +48,22 @@
   - Backend + provider nuances: [verson.tf](verson.tf)
   - ECR conventions: [modules/ecr/main.tf](modules/ecr/main.tf) and [modules/ecr/output.tf](modules/ecr/output.tf)
 
+## Configuration inputs
+
+Set common values in `terraform.tfvars` or override on the CLI with `-var`.
+
+| Variable | Purpose | Default |
+| --- | --- | --- |
+| `project_name` | Project or application name used for resource naming. | `app` |
+| `environment` | Environment name (dev/staging/prod). | `dev` |
+| `tags` | Map of extra tags applied to all resources. | `{}` |
+| `vpc_cidr` | CIDR range for the VPC. | `10.0.0.0/16` |
+| `vpc_azs` | Availability zones for the VPC subnets. | `["us-east-1a","us-east-1b"]` |
+| `vpc_private_subnets` | Private subnet CIDR blocks. | `["10.0.1.0/24","10.0.2.0/24"]` |
+| `vpc_public_subnets` | Public subnet CIDR blocks. | `["10.0.101.0/24","10.0.102.0/24"]` |
+| `cluster_version` | EKS Kubernetes version. | `1.29` |
+| `node_instance_types` | Instance types for the managed node group. | `["t3.micro"]` |
+| `node_desired_size` | Desired number of nodes. | `2` |
+| `node_min_size` | Minimum number of nodes. | `1` |
+| `node_max_size` | Maximum number of nodes. | `3` |
+| `ecr_repo_name` | Custom ECR repository name (leave empty to use prefix). | `""` |

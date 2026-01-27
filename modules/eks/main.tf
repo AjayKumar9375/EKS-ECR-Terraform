@@ -28,14 +28,22 @@ module "eks" {
   vpc_id     = var.vpc_id
   subnet_ids = var.subnet_ids
 
+  cluster_endpoint_public_access = var.cluster_endpoint_public_access
+  cluster_addons                  = var.cluster_addons
+
   eks_managed_node_groups = {
     default = {
-      desired_size   = 2
-      max_size       = 3
-      min_size       = 1
-      instance_types = ["t3.micro"]
+      desired_size   = var.node_group_size.desired
+      max_size       = var.node_group_size.max
+      min_size       = var.node_group_size.min
+      instance_types = var.node_instance_types
+      iam_role_additional_policies = {
+        ecr_read_only = aws_iam_policy.eks-policy.arn
+      }
     }
   }
 
   enable_irsa = true
+
+  tags = var.tags
 }
